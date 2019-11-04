@@ -1,0 +1,37 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory (28 is current forge version)
+
+# A URL to refer people to when problems occur with this mod
+#issueTrackerURL="" #optional
+
+[[mods]] #mandatory
+modId="customtitle" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Custom Title" #mandatory
+#updateJSONURL="http://myurl.me/" #optional
+#displayURL="" #optional
+logoFile="customtitle.png" #optional
+#credits="Thanks for you to use this mod" #optional
+authors="nnnnusui" #optional
+description='''
+    Customized window title.
+'''
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.examplemod]] #optional
+    # the modid of the dependency
+    modId="forge" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[28,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+# Here's another dependency
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14.4]"
+    ordering="NONE"
+    side="BOTH"
