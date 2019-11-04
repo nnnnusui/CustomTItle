@@ -20,7 +20,7 @@ public class TitleCustomizer{
     public void onClientTick(TickEvent.ClientTickEvent event) {
         GLFW.glfwSetWindowTitle(window.getHandle()
                 ,String.join(" | ", new String[]{
-                    String.format("%s (%s)", getter.getGameDirName(), getter.getVersion())
+                    String.format("%s (%s mods, %s)", getter.getGameDirName(), getter.getModsCount(), getter.getVersion())
                    ,String.format("fps: %d (%d chunk updates)", getter.getDebugFPS(), ChunkRender.renderChunksUpdated)
                 }));
     }
