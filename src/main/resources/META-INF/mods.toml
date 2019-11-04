@@ -2,20 +2,19 @@ modLoader="javafml" #mandatory
 loaderVersion="[28,)" #mandatory (28 is current forge version)
 
 # A URL to refer people to when problems occur with this mod
-#issueTrackerURL="" #optional
+issueTrackerURL="https://github.com/nnnnusui/CustomTitle/issues" #optional
 
 [[mods]] #mandatory
 modId="customtitle" #mandatory
 version="${file.jarVersion}" #mandatory
 displayName="Custom Title" #mandatory
-#updateJSONURL="http://myurl.me/" #optional
-#displayURL="" #optional
+#updateJSONURL="" #optional
+displayURL="https://github.com/nnnnusui/CustomTitle" #optional
 logoFile="customtitle.png" #optional
-#credits="Thanks for you to use this mod" #optional
+credits="This mod is still personal(inconvenient)." #optional
 authors="nnnnusui" #optional
 description='''
-    Customized window title.
-'''
+    Customized window title.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.examplemod]] #optional
     # the modid of the dependency

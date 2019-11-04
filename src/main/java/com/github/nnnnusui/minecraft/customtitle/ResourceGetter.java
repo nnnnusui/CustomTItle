@@ -14,6 +14,6 @@ public class ResourceGetter {
     }
     public String getGameDirName(){
         Path path = Minecraft.getInstance().gameDir.getAbsoluteFile().toPath();
-        return path.getParent().getFileName().toString();
+        return path.getFileName().toString();
     }
 }
