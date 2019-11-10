@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 @Mod("customtitle")
 public class CustomTitle {
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    static final Logger LOGGER = LogManager.getLogger();
 
     public CustomTitle() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
@@ -21,7 +21,7 @@ public class CustomTitle {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        new TitleCustomizer();
+        Loader.load();
     }
 }
 
