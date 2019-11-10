@@ -14,7 +14,15 @@ logoFile="customtitle.png" #optional
 credits="This mod is still personal(inconvenient)." #optional
 authors="nnnnusui" #optional
 description='''
-    Customize window title.'''
+    Customize window title.
+
+
+    You can edit [config/customtitle/TitleCustomizer.jar].
+
+    !!WORNING!! NEVER place an [TitleCustomizer.jar] received from someone else.
+
+    !!注意!! 他人から受け取った[TitleCustomizer.jar]は *絶対に* 配置しないでください。
+'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.examplemod]] #optional
     # the modid of the dependency
