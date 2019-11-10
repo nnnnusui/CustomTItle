@@ -20,8 +20,6 @@ public class CustomTitle {
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("customtitle.toml"));
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        Loader.load();
-    }
+    private void doClientStuff(final FMLClientSetupEvent event) { Loader.load(); }
 }
 

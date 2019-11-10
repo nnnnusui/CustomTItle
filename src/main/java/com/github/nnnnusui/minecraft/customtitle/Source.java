@@ -58,8 +58,4 @@ public class Source {
            ,"}"
         );
     }
-
-    public static void main(String[] args) {
-        System.out.println(Source.instance.packageName.split(Pattern.quote(".")).length);
-    }
 }

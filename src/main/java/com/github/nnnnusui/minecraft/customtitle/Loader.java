@@ -22,9 +22,11 @@ import java.util.regex.Pattern;
 public class Loader {
     private static final String logPrefix = "mod.CustomTitle: ";
     private static final MainWindow window = Minecraft.getInstance().mainWindow;
+    private static Loader instance = null;
     static void load() {
         try {
-            new Loader();
+            if(instance == null)
+                instance = new Loader();
         } catch (Exception exception) {
             final String message = "initialize error | " + exception.toString();
             CustomTitle.LOGGER.debug(message);
