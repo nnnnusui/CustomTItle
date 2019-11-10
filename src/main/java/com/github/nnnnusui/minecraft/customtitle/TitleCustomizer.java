@@ -25,14 +25,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TitleCustomizer{
-    private ResourceGetter getter = new ResourceGetter();
     private MainWindow window = Minecraft.getInstance().mainWindow;
     private Object instance;
-//    static {
-//        try {
-//            new Test().test();
-//        } catch (Exception e) {}
-//    }
 
     public TitleCustomizer(){
         MinecraftForge.EVENT_BUS.register(this);
@@ -47,19 +41,17 @@ public class TitleCustomizer{
         GLFW.glfwSetWindowTitle(window.getHandle(), instance.toString());
     }
 
-    // https://stackoverflow.com/questions/2946338/how-do-i-programmatically-compile-and-instantiate-a-java-class
     private void reloadInstance() throws Exception{
         Path root = Paths.get("config");
         Path path = Paths.get(root.toString(), "customtitle", "Test.java");
 //        genFile(path);
-        // https://code-examples.net/en/q/17dd05
+
         List<String> options = new ArrayList<String>();
         options.addAll(Arrays.asList("-classpath", System.getProperty("java.class.path")));
         options.add(path.toString());
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         compiler.run(null, null, null, options.toArray(new String[0]));
 
-        // https://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
         URL[] urls = new URL[]{ root.toUri().toURL() };
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         URLClassLoader classLoader = new URLClassLoader(urls, contextClassLoader);
@@ -67,15 +59,9 @@ public class TitleCustomizer{
         Class clazz = Class.forName("customtitle.Test", true, classLoader);
         instance = clazz.newInstance();
     }
-    private URL getURL(URI path){
-        try {
-            return path.toURL();
-        } catch (MalformedURLException exception){
-            throw new RuntimeException(exception);
-        }
-    }
+
     private void genFile(Path path){
-//        String source = "package com.github.nnnnusui.minecraft.customtitle; public class Test { public String toString() { return \"Test#test()\"; } }";
+//        String source = "package customtitle; public class Test { public String toString() { return \"Test#test()\"; } }";
         try {
             if(!Files.exists(path.getParent()))
                 Files.createDirectories(path.getParent());
