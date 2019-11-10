@@ -10,19 +10,16 @@ import net.minecraftforge.fml.config.ModConfig;
 import java.nio.file.Path;
 
 @Mod.EventBusSubscriber
-public class Config {
+public class Config{
     public static final String SUBCATEGORY_FIRSTBLOCK = "firstblock";
 
-//    private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
     private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
-//    public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
     public static ForgeConfigSpec.BooleanValue LimitedImport;
 
     static {
         setupConfig();
-//        COMMON_CONFIG = COMMON_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
 
@@ -48,10 +45,32 @@ public class Config {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading configEvent) {
-
     }
 
     @SubscribeEvent
     public static void onReload(final ModConfig.ConfigReloading configEvent) {
     }
+
+
 }
+//class GuiConfigFactory implements IModGuiFactory{
+//    @Override
+//    public void initialize(Minecraft minecraftInstance) {
+//
+//    }
+//
+//    @Override
+//    public boolean hasConfigGui() {
+//        return false;
+//    }
+//
+//    @Override
+//    public Screen createConfigGui(Screen parentScreen) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
+//        return null;
+//    }
+//}
