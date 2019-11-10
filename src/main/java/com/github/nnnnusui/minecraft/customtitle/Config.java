@@ -11,12 +11,13 @@ import java.nio.file.Path;
 
 @Mod.EventBusSubscriber
 public class Config{
-    public static final String SUBCATEGORY_FIRSTBLOCK = "firstblock";
+    public static final String Category_option = "option";
 
     private static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
     public static ForgeConfigSpec CLIENT_CONFIG;
 
-    public static ForgeConfigSpec.BooleanValue LimitedImport;
+    public static ForgeConfigSpec.BooleanValue compile;
+//    public static ForgeConfigSpec.BooleanValue LimitedImport;
 
     static {
         setupConfig();
@@ -24,10 +25,12 @@ public class Config{
     }
 
     private static void setupConfig() {
-        CLIENT_BUILDER.comment("FirstBlock settings").push(SUBCATEGORY_FIRSTBLOCK);
+        CLIENT_BUILDER.push(Category_option);
 
-        LimitedImport = CLIENT_BUILDER.comment("WARNING")
-                .define("limited import", true);
+        compile = CLIENT_BUILDER.comment("")
+                .define("compile", false);
+//        LimitedImport = CLIENT_BUILDER.comment("WARNING")
+//                .define("limited import", true);
 
         CLIENT_BUILDER.pop();
     }

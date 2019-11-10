@@ -44,6 +44,8 @@ public class Loader {
         = new String[]{
             "-classpath"
            ,System.getProperty("java.class.path")
+//           ,String.join(";", Files.walk(Paths.get("G:\\game\\Minecraft\\.minecraft\\libraries"))
+//            .filter(it -> !Files.isDirectory(it)).map(Path::toString).toArray(String[]::new))
            ,sourcePath.toString()
         };
     private final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -70,14 +72,18 @@ public class Loader {
     }
 
     private void reloadInstance() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, CompileTimeException {
-        if (Files.exists(classPath))
-            Files.delete(classPath);
         lastModified = Files.getLastModifiedTime(sourcePath);
-        compile();
+        if (Config.compile.get())
+            if (compiler == null)
+                throw new IllegalStateException("JAVA_HOME not setting");
+            else
+                compile();
         loadClass();
         CustomTitle.LOGGER.info("reload.");
     }
-    private void compile() throws CompileTimeException {
+    private void compile() throws IOException, CompileTimeException {
+        if (Files.exists(classPath))
+            Files.delete(classPath);
         final ByteArrayOutputStream err = new ByteArrayOutputStream();
         compiler.run(null, null, err, options);
         if(err.size() > 0)
