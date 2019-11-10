@@ -19,7 +19,9 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TitleCustomizer{
@@ -35,42 +37,35 @@ public class TitleCustomizer{
     public TitleCustomizer(){
         MinecraftForge.EVENT_BUS.register(this);
         try{
-            instance = getInstance();
+            reloadInstance();
             System.out.println("newClazz: " + instance);
         } catch (Exception exception){}
     }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        GLFW.glfwSetWindowTitle(window.getHandle()
-//                ,String.join(" | ", new String[]{
-//                    String.format("%s (%s mods, %s)", getter.getGameDirName(), getter.getModsCount(), getter.getVersion())
-//                   ,String.format("fps: %d (%d chunk updates)", getter.getDebugFPS(), ChunkRender.renderChunksUpdated)
-//                }));
-                ,instance.toString());
+        GLFW.glfwSetWindowTitle(window.getHandle(), instance.toString());
     }
 
-    private Object getInstance() throws Exception{
+    // https://stackoverflow.com/questions/2946338/how-do-i-programmatically-compile-and-instantiate-a-java-class
+    private void reloadInstance() throws Exception{
         Path root = Paths.get("config");
         Path path = Paths.get(root.toString(), "customtitle", "Test.java");
 //        genFile(path);
+        // https://code-examples.net/en/q/17dd05
+        List<String> options = new ArrayList<String>();
+        options.addAll(Arrays.asList("-classpath", System.getProperty("java.class.path")));
+        options.add(path.toString());
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        compiler.run(null, null, null, options.toArray(new String[0]));
 
-//        compiler.run(null, null, null
-////                ,"-classpath", "G:\\game\\Minecraft\\.minecraft\\libraries\\net\\minecraftforge\\forge\\1.14.4-28.1.0\\forge-1.14.4-28.1.0-client.jar;G:\\game\\Minecraft\\.minecraft\\libraries\\net\\minecraftforge\\forgespi\\1.3.0\\forgespi-1.3.0.jar"
-//                , path.toString());
-        URL[] urls = Arrays.stream(new String[]{
-                root.toString()
-//                ,"G:\\game\\Minecraft\\.minecraft\\libraries\\net\\minecraftforge\\forge\\1.14.4-28.1.0\\forge-1.14.4-28.1.0-client.jar"
-//                ,"G:\\game\\Minecraft\\.minecraft\\libraries\\net\\minecraftforge\\forgespi\\1.3.0\\forgespi-1.3.0.jar"
-            }).map(it -> Paths.get(it).toUri())
-            .map(this::getURL)
-            .toArray(URL[]::new);
-        URLClassLoader classLoader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
-//        ClassLoader classLoader = TitleCustomizer.class.getClassLoader();
-//        classLoader.loadClass()
+        // https://stackoverflow.com/questions/252893/how-do-you-change-the-classpath-within-java
+        URL[] urls = new URL[]{ root.toUri().toURL() };
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        URLClassLoader classLoader = new URLClassLoader(urls, contextClassLoader);
+
         Class clazz = Class.forName("customtitle.Test", true, classLoader);
-        return clazz.newInstance();
+        instance = clazz.newInstance();
     }
     private URL getURL(URI path){
         try {
