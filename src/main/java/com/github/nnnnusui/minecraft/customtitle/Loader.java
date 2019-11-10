@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import java.util.regex.Pattern;
 
 public class Loader {
     private static final String logPrefix = "mod.CustomTitle: ";
@@ -30,29 +31,28 @@ public class Loader {
             GLFW.glfwSetWindowTitle(window.getHandle(), logPrefix + message);
         }
     }
-
+    private final Source source    = Source.instance;
+    private final String className = source.packageName +"."+ source.className;
     private final Path rootPath    = Paths.get("config");
-    private final Path packagePath = Paths.get(rootPath.toString(), "customtitle");
-    private final Path sourcePath = Paths.get(packagePath.toString(), "Test.java");
-    private final Path classPath  = Paths.get(packagePath.toString(), "Test.class");
-    private Object   customTitle = "";
-    private FileTime lastModified;
-
-    private final URL[]       urls               = new URL[]{ rootPath.toUri().toURL() };
-    private final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-
+    private final Path packagePath = Paths.get(rootPath.toString(), source.packageName.split(Pattern.quote(".")));
+    private final Path sourcePath = Paths.get(packagePath.toString(), source.className+".java");
+    private final Path classPath  = Paths.get(packagePath.toString(), source.className+".class");
+    private final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     private final String[] options
         = new String[]{
             "-classpath"
            ,System.getProperty("java.class.path")
            ,sourcePath.toString()
         };
-    private final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    private final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+    private final URL[]       urls               = new URL[]{ rootPath.toUri().toURL() };
+    private Object   customTitle = "";
+    private FileTime lastModified;
 
     private Loader() throws Exception {
         MinecraftForge.EVENT_BUS.register(this);
+        generateFile(sourcePath);
         reloadInstance();
-//        genFile(path);
     }
 
     // TODO: Change to an appropriate event.
@@ -83,32 +83,23 @@ public class Loader {
     }
     private void loadClass() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         /*mandatory-reload*/URLClassLoader classLoader = new URLClassLoader(urls, contextClassLoader);
-        final Class clazz = Class.forName("customtitle.Test", true, classLoader);
+        final Class clazz = Class.forName(className, true, classLoader);
         customTitle = clazz.newInstance();
     }
 
-    private void genFile(Path path){
-//        String source = "package customtitle; public class Test { public String toString() { return \"Test#test()\"; } }";
+    private void generateFile(Path path){
         try {
-            if(!Files.exists(path.getParent()))
+            if(Files.notExists(path.getParent()))
                 Files.createDirectories(path.getParent());
-            if(!Files.exists(path))
+            if(Files.notExists(path))
                 Files.createFile(path);
-//            Files.write(path, source.getBytes());
+            Files.write(path, source.toSourceCode()/*, StandardCharsets.UTF_8*/);
         } catch(IOException exception) {
-            exception.printStackTrace();
+            errorLog("file generate error. | "+ exception.toString());
         }
     }
     private void errorLog(String message){
         CustomTitle.LOGGER.debug(message);
         customTitle = logPrefix + message;
-    }
-}
-class CompileTimeException extends Exception {
-    public CompileTimeException(String message){
-        super(message);
-    }
-    public CompileTimeException(ByteArrayOutputStream stream){
-        this(new String(stream.toByteArray()));
     }
 }
