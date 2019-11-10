@@ -2,7 +2,6 @@ package com.github.nnnnusui.minecraft.customtitle;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Source {
     public static final Source instance = new Source();

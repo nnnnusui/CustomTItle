@@ -15,9 +15,8 @@ public class CustomTitle {
 
     public CustomTitle() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        MinecraftForge.EVENT_BUS.register(this);
-
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("customtitle.toml"));
+//        MinecraftForge.EVENT_BUS.register(this);
+//        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("customtitle.toml"));
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) { Loader.load(); }
